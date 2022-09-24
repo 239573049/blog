@@ -137,7 +137,10 @@ public class BlogServer : IBlogServer
 
         var dto = _mapper.Map<BlogDto>(data);
 
-        var comment = await _blogDbContext.BlogComments.Where(x => x.BlogId == id).OrderByDescending(x => x.CreationTime).ToListAsync();
+        var comment = await _blogDbContext.BlogComments
+        .Where(x => x.BlogId == id)
+        .OrderByDescending(x => x.CreationTime)
+        .Include(x => x.User).ToListAsync();
 
         dto.BlogComments = _mapper.Map<List<BlogCommentsDto>>(comment);
 

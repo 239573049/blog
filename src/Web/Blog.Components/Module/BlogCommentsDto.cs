@@ -1,6 +1,6 @@
-﻿using Blog.Application.Contract.Base;
+﻿using Blog.Components.Module.Base;
 
-namespace Blog.Application.Contract.Blogs.Dto;
+namespace Blog.Components.Module;
 
 public class BlogCommentsDto : EntityDto
 {
@@ -13,7 +13,6 @@ public class BlogCommentsDto : EntityDto
     /// 指定博客Id
     /// </summary>
     public Guid BlogId { get; set; }
-
 
     public BlogUserDto? User { get; set; }
 }

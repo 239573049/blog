@@ -37,7 +37,7 @@ public class BlogController : ControllerBase
     /// </summary>
     /// <param name="blogId"></param>
     /// <returns></returns>
-    [HttpPut("page-view/{blogId}")]
+    [HttpGet("page-view/{blogId}")]
     [AllowAnonymous]
     public async Task AddPageViewAsync(Guid blogId)
     {
@@ -83,7 +83,7 @@ public class BlogController : ControllerBase
     /// </summary>
     /// <param name="id">博客Id</param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpGet("like/{id}")]
     public async Task LikeAsync(Guid id)
     {
         await _blogServer.LikeAsync(id);

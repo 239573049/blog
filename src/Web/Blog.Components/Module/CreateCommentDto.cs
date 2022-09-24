@@ -1,8 +1,6 @@
-﻿using Blog.Application.Contract.Base;
+﻿namespace Blog.Components.Module;
 
-namespace Blog.Application.Contract.Blogs.Dto;
-
-public class BlogCommentsDto : EntityDto
+public class CreateCommentDto
 {
     /// <summary>
     /// 评论内容
@@ -14,6 +12,4 @@ public class BlogCommentsDto : EntityDto
     /// </summary>
     public Guid BlogId { get; set; }
 
-
-    public BlogUserDto? User { get; set; }
 }

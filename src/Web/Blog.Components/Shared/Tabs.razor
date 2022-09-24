@@ -1,0 +1,52 @@
+﻿
+<MCard>
+
+    <MTabs BackgroundColor="deep-purple accent-4"
+           Centered
+           Dark
+           IconsAndText>
+
+        @foreach(var d in BogTypeDtos)
+        {
+            <MTab OnClick="()=>OnClick(d)">@d.Name</MTab>
+
+        }
+        <MSpacer></MSpacer>
+
+        <MMenu Left
+               Bottom>
+            <ActivatorContent>
+                <MButton Icon Height="@("100%")" @attributes="@context.Attrs">
+                    <MIcon>mdi-dots-vertical</MIcon>
+                </MButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MList>
+
+                    @if(isAuthorization)
+                    {
+                        <MListItem @onclick="LogOut">
+                            <MListItemTitle>退出登录</MListItemTitle>
+                        </MListItem>
+                    }
+                    else
+                    {
+                        <MListItem @onclick="Login">
+                            <MListItemTitle>登录</MListItemTitle>
+                        </MListItem>
+                    }
+
+
+                </MList>
+            </ChildContent>
+        </MMenu>
+    </MTabs>
+
+    <MTabsItems>
+        <MTabItem>
+            <MCard Flat>
+                <MCardText>@ChildContent</MCardText>
+            </MCard>
+        </MTabItem>
+    </MTabsItems>
+</MCard>

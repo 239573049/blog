@@ -70,6 +70,14 @@ services.AddSwaggerGen(options =>
 });
 
 services.AddApplication();
+services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", corsBuilder =>
+    {
+        corsBuilder.SetIsOriginAllowed((string _) => true).AllowAnyMethod().AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 
 var JwtOptionsSection = configuration.GetSection(nameof(JwtOptions));
 
@@ -106,18 +114,16 @@ builder.Services.AddMvcCore(x =>
 
 var app = builder.Build();
 
-// 当前环境变量是否为Development 如果是则进入
-if(app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "博客Api");
-        c.DocExpansion(DocExpansion.None);
-        c.DefaultModelsExpandDepth(-1);
-    });
-}
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "博客Api");
+    c.DocExpansion(DocExpansion.None);
+    c.DefaultModelsExpandDepth(-1);
+});
+
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 

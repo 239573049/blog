@@ -1,0 +1,64 @@
+﻿@using BlazorComponent
+@using Blog.Components.Shared
+
+@layout EmptyLayou
+
+@page "/blog/{id:guid}"
+
+<div class="title">
+    @BlogDto?.Title
+</div>
+<MDivider></MDivider>
+
+<MCard>
+
+    <div id="content" class="content">
+    </div>
+
+</MCard>
+<MDivider>
+    评论区
+</MDivider>
+<div>
+    <MEditor @bind-Value="Content" Markdown Placeholder="请发表您的评论" Class="editor" Upload="_upload">
+    </MEditor>
+    <BButton Block OnClick="CreateCommentAsync">提交</BButton>
+</div>
+
+@if(BlogDto != null)
+{
+    <MCard>
+    <MList >
+        @foreach(var item in BlogDto!.BlogComments)
+        {
+            <MListItem Class="home-list" >
+                <MListItemAvatar>
+                    <MImage Src="@item.User.Avatar"></MImage>
+                </MListItemAvatar>
+
+                <MListItemContent>
+                    <MListItemTitle>@((MarkupString) item.User.Username)</MListItemTitle>
+                        <MListItemSubtitle>@((MarkupString) item.Content)</MListItemSubtitle>
+                    </MListItemContent>
+                </MListItem>
+        }
+    </MList>
+    </MCard>
+}
+
+
+<style>
+    .text {
+        min-height: 100%;
+    }
+
+    .editor{
+        min-height:150px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 120px;
+    }
+
+</style>
