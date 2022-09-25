@@ -30,14 +30,6 @@ public partial class BlogShow
     /// </summary>
     private string? Content;
 
-    private MEditorUpload _upload = new MEditorUpload
-    {
-        Action = "http://localhost:5169/api/File",
-        TokenName = "Authorization",
-        Name = "file",
-        Accept = "image/png, image/gif, image/jpeg, image/bmp, image/x-icon",
-        PathKey = "$data"
-    };
 
     private async Task GetBlogAsync()
     {
