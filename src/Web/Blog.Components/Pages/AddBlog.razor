@@ -33,19 +33,22 @@
              ItemValue="u => u.Id">
     </MSelect>
 
-    <MButton Block>发布</MButton>
+    <MButton Block OnClick="()=>OnCliCkAsync()">发布</MButton>
 </div>
 
 @code {
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; }
+    public NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
-    public ILocalStorageService ILocalStorageService { get; set; }
+    public ILocalStorageService ILocalStorageService { get; set; } = null!;
 
     [Inject]
-    public BlogTypeApi BlogTypeApi { get; set; }
+    public BlogTypeApi BlogTypeApi { get; set; } = null!;
+
+    [Inject]
+    public BlogApi BlogApi { get; set; } = null!;
 
     public CreateBlogsDto CreateBlogsDto { get; set; } = new CreateBlogsDto();
 
@@ -62,7 +65,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _upload.Token = "Bearer "+ await ILocalStorageService.GetItemAsStringAsync("token");
+        _upload.Token = "Bearer " + await ILocalStorageService.GetItemAsStringAsync("token");
 
         await base.OnInitializedAsync();
 
@@ -70,7 +73,8 @@
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender){
+        if(firstRender)
+        {
             BlogTypeDto = await BlogTypeApi.GetListAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -81,6 +85,11 @@
         NavigationManager.NavigateTo("/");
     }
 
+    private async Task OnCliCkAsync()
+    {
+        await BlogApi.CreateAsync(CreateBlogsDto);
+        NavigationManager.NavigateTo("/");
+    }
 }
 
 <style>
