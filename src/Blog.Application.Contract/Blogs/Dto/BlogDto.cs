@@ -48,6 +48,10 @@ public class BlogDto : EntityDto
     /// </summary>
     public BlogUserDto? Author { get; set; }
 
+    /// <summary>
+    /// 是否点赞
+    /// </summary>
+    public bool IsLike { get; set; }
 
     /// <summary>
     /// 博客评论列表

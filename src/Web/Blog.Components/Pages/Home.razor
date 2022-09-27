@@ -5,7 +5,7 @@
     {
         <MListItem Class="home-list" OnClick="()=>OnClick(i)">
             <MListItemAvatar>
-                <MImage Dark Src="@i.Author.Avatar"></MImage>
+                <MImage Dark Src="@i.Author?.Avatar"></MImage>
             </MListItemAvatar>
 
             <MListItemContent>
@@ -17,6 +17,14 @@
                 <MButton Icon>
                     <MIcon Color="grey lighten-1">mdi-eye-circle</MIcon>
                     <span>@i.PageView</span>
+                </MButton>
+
+            </MListItemAction>
+            <MListItemAction>
+
+            <MButton Icon>
+                <MIcon Color="grey lighten-1">mdi-thumb-up</MIcon>
+                <span>@i.Like</span>
                 </MButton>
             </MListItemAction>
         </MListItem>

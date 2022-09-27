@@ -123,6 +123,8 @@ public class BlogServer : IBlogServer
     /// <inheritdoc/>
     public async Task<BlogDto> GetAsync(Guid id)
     {
+        var userId = _currentService.GetUserId();
+
         var data = await _blogDbContext.Blogs.Where(x => x.Id == id)
         .AsNoTracking()  // 禁用跟踪查询
         .AsSplitQuery()
@@ -141,6 +143,8 @@ public class BlogServer : IBlogServer
         .Where(x => x.BlogId == id)
         .OrderByDescending(x => x.CreationTime)
         .Include(x => x.User).ToListAsync();
+
+        dto.IsLike = _blogDbContext.BlogLikes.Any(x => x.UserId == userId && x.BlogId == id);
 
         dto.BlogComments = _mapper.Map<List<BlogCommentsDto>>(comment);
 

@@ -5,83 +5,110 @@
 
 @page "/blog/{id:guid}"
 
-<div class="title">
-    @BlogDto?.Title
-</div>
-<MDivider></MDivider>
-
-<MCard>
-
-    <div id="content" class="content">
+<div style="margin: 20px;">
+    <div class="title">
+        @BlogDto?.Title
     </div>
+    <MDivider></MDivider>
 
-</MCard>
-<MDivider>
-    评论区
-</MDivider>
-<div>
-    <MEditor @bind-Value="Content" Markdown Placeholder="请发表您的评论" Class="editor" >
-
-        <ToolbarContent>
-            <select class="ql-header">
-                <option selected=""></option>
-                <option value="1"></option>
-                <option value="2"></option>
-                <option value="3"></option>
-                <option value="4"></option>
-                <option value="5"></option>
-            </select>
-            <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-            </span>
-            <span class="ql-formats">
-                <select class="ql-color"></select>
-                <select class="ql-background"></select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-link"></button>
-            </span>
-        </ToolbarContent>
-    </MEditor>
-    <BButton Block OnClick="CreateCommentAsync">提交</BButton>
-</div>
-
-@if(BlogDto != null)
-{
     <MCard>
-    <MList >
-        @foreach(var item in BlogDto!.BlogComments)
-        {
-            <MListItem Class="home-list" >
-                <MListItemAvatar>
-                    <MImage Src="@item.User.Avatar"></MImage>
-                </MListItemAvatar>
 
-                <MListItemContent>
-                    <MListItemTitle>@((MarkupString) item.User.Username)</MListItemTitle>
-                        <MListItemSubtitle>@((MarkupString) item.Content)</MListItemSubtitle>
-                    </MListItemContent>
-                </MListItem>
-        }
-    </MList>
+        <div id="content" class="content">
+        </div>
+
     </MCard>
-}
 
+    <MDivider>
+        功能区
+    </MDivider>
+    @if(BlogDto?.IsLike == true){
+        <MButton Class="ma-2"
+             Text
+             Icon
+             OnClick="OnClickLikeAsync"
+             Color="blue lighten-2">
+            <MIcon>mdi-thumb-up</MIcon>
+        </MButton>
+    }
+    else
+    {
+        <MButton Icon
+             OnClick="OnClickLikeAsync">
+            <MIcon Color="grey lighten-1">mdi-thumb-up</MIcon>
+        </MButton>
+
+    }
+
+
+    <MDivider>
+        发送评论
+    </MDivider>
+
+    <div>
+        <MEditor @bind-Value="Content" Markdown Placeholder="请发表您的评论" Class="editor">
+            <ToolbarContent>
+                <select class="ql-header">
+                    <option selected=""></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                </select>
+                <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-color"></select>
+                    <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-link"></button>
+                </span>
+            </ToolbarContent>
+        </MEditor>
+        <MButton Block OnClick="CreateCommentAsync">发送评论</MButton>
+    </div>
+    <MDivider>
+        评论区
+    </MDivider>
+
+    @if(BlogDto != null)
+    {
+        <MCard>
+            <MList>
+                @foreach(var item in BlogDto!.BlogComments)
+                {
+                    <MListItem Class="home-list">
+                        <MListItemAvatar>
+                            <MImage Src="@item.User.Avatar"></MImage>
+                        </MListItemAvatar>
+
+                        <MListItemContent>
+                            <MListItemTitle>@((MarkupString) item.User.Username)</MListItemTitle>
+                                <MListItemSubtitle>@((MarkupString) item.Content)</MListItemSubtitle>
+                            </MListItemContent>
+                        </MListItem>
+                }
+            </MList>
+        </MCard>
+    }
+</div>
 
 <style>
     .text {
         min-height: 100%;
     }
 
-    .editor{
-        min-height:150px;
+    .editor {
+        min-height: 150px;
     }
 
     .title {
@@ -89,4 +116,6 @@
         font-size: 120px;
     }
 
+    .content {
+    }
 </style>

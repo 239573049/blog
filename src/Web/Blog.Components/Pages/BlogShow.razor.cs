@@ -14,13 +14,13 @@ public partial class BlogShow
     /// <summary>
     /// 博客内容
     /// </summary>
-    public BlogDto? BlogDto { get; set; }
+    public BlogDto? BlogDto { get; set; } = new BlogDto();
 
     [Inject]
     public BlogApi BlogApi { get; set; } = null!;
 
     [Inject]
-    public IJSRuntime Js { get; set; } 
+    public IJSRuntime Js { get; set; }
 
 
     /// <summary>
@@ -71,6 +71,14 @@ public partial class BlogShow
         });
         Content = "";
         await GetBlogAsync();
+    }
 
+    private async Task OnClickLikeAsync()
+    {
+        await BlogApi.LikeAsync(Id);
+
+        BlogDto!.IsLike = !BlogDto.IsLike;
+
+        StateHasChanged();
     }
 }
