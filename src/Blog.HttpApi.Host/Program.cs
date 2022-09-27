@@ -1,4 +1,5 @@
 using Blog.Application;
+using Blog.Components;
 using Blog.HttpApi.Host.Filters;
 using Blog.HttpApi.Host.Options;
 using Infrastructure;
@@ -7,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text;
+using Token.Module.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,6 +113,11 @@ builder.Services.AddMvcCore(x =>
     x.Filters.Add<ResponseFilter>(); //  相应格式过滤器
     x.Filters.Add<ExceptionFilter>();// 异常过滤器
 });
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+await builder.Services.AddModuleApplication<BlogComponentsModule>();
+
+
 
 var app = builder.Build();
 
@@ -123,12 +130,27 @@ app.UseSwaggerUI(c =>
     c.DefaultModelsExpandDepth(-1);
 });
 
-app.UseCors("CorsPolicy");
-app.UseAuthentication();
-app.UseAuthorization();
+
+if(!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+}
 
 app.UseStaticFiles();
 
 app.MapControllers();
+
+app.UseCors("CorsPolicy");
+
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

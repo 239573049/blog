@@ -1,0 +1,40 @@
+﻿@page "/"
+
+@namespace Blog.HttpApi.Host.Pages
+
+@using Blog.HttpApi.Host
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<!-- masa blazor css style -->
+<link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet" />
+<link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet" />
+<link href="Blog.Components.css" rel="stylesheet" />
+
+<!--icon file,import need to use-->
+<link href="https://cdn.masastack.com/npm/@("@mdi")/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="https://cdn.masastack.com/npm/materialicons/materialicons.css" rel="stylesheet">
+<link href="https://cdn.masastack.com/npm/fontawesome/v5.0.13/css/all.css" rel="stylesheet">
+<script src="https://cdn.masastack.com/npm/vditor/3.8.12/dist/index.min.js"></script>
+<link rel="stylesheet" href="https://cdn.masastack.com/npm/vditor/3.8.12/dist/index.css" />
+<link href="https://cdn.masastack.com/npm/quill/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="https://cdn.masastack.com/npm/quill/1.3.6/quill.bubble.css" rel="stylesheet">
+<link href="https://cdn.masastack.com/npm/quill/1.3.6/quill-emoji.css" rel="stylesheet">
+<link href="https://cdn.masastack.com/npm/quill/1.3.6/quilljs-markdown-common-style.css" rel="stylesheet">
+<script src="https://cdn.masastack.com/npm/quill/1.3.6/quill.js"></script>
+<script src="https://cdn.masastack.com/npm/quill/1.3.6/quilljs-markdown.js"></script>
+<script src="https://cdn.masastack.com/npm/quill/1.3.6/quill-emoji.js"></script>
+
+<!--js(should lay the end of file)-->
+<script src="_content/BlazorComponent/js/blazor-component.js"></script>
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />
+
+
+<script>
+    function loadContent(id,data){
+        document.getElementById(id).innerHTML = data
+    }
+</script>

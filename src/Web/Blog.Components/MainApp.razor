@@ -1,5 +1,6 @@
 ﻿@using Blog.Components.Shared
-    <Router AppAssembly="@typeof(MainApp).Assembly">
+@using System.Reflection
+<Router AppAssembly="@typeof(MainLayout).Assembly">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />

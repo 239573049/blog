@@ -25,6 +25,9 @@
 
                     @if(isAuthorization)
                     {
+                        <MListItem @onclick="CreateBlog">
+                            <MListItemTitle>添加博客</MListItemTitle>
+                        </MListItem>
                         <MListItem @onclick="LogOut">
                             <MListItemTitle>退出登录</MListItemTitle>
                         </MListItem>

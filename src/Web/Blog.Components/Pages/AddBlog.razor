@@ -1,0 +1,91 @@
+﻿@using Blazored.LocalStorage
+@using Blog.Components.Apis
+@using Blog.Components.Module
+@using Blog.Components.Shared
+@using Masa.Blazor.Components.Editor
+
+@layout EmptyLayou
+
+@page "/add-blog"
+
+<MAppBar>
+
+    <MButton Icon Color="pink" OnClick="OnHome">
+        <MIcon>home</MIcon>
+    </MButton>
+
+</MAppBar>
+
+<div class="edit">
+    <MDivider>博客标题</MDivider>
+    <MTextField Label="Title" @bind-Value="CreateBlogsDto.Title"></MTextField>
+    <MDivider>博客内容</MDivider>
+    <div>
+        <MEditor @bind-Value="CreateBlogsDto.Content" Markdown Upload="_upload">
+        </MEditor>
+    </div>
+    <MDivider></MDivider>
+
+    <MSelect @bind-Value="CreateBlogsDto.TypeId"
+             Label="Standard"
+             Items="@BlogTypeDto"
+             ItemText="u => u.Name"
+             ItemValue="u => u.Id">
+    </MSelect>
+
+    <MButton Block>发布</MButton>
+</div>
+
+@code {
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public ILocalStorageService ILocalStorageService { get; set; }
+
+    [Inject]
+    public BlogTypeApi BlogTypeApi { get; set; }
+
+    public CreateBlogsDto CreateBlogsDto { get; set; } = new CreateBlogsDto();
+
+    public List<BlogTypeDto> BlogTypeDto { get; set; } = new List<BlogTypeDto>();
+
+    private MEditorUpload _upload = new MEditorUpload
+        {
+            Action = "/api/File",
+            TokenName = "Authorization",
+            Name = "file",
+            Accept = "image/png, image/gif, image/jpeg, image/bmp, image/x-icon",
+            PathKey = "data"
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+        _upload.Token = "Bearer "+ await ILocalStorageService.GetItemAsStringAsync("token");
+
+        await base.OnInitializedAsync();
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            BlogTypeDto = await BlogTypeApi.GetListAsync();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void OnHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+}
+
+<style>
+    .edit {
+        min-width: 600px;
+        background-color: antiquewhite;
+    }
+</style>

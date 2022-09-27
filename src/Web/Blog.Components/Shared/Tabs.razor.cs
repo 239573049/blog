@@ -74,6 +74,11 @@ public partial class Tabs
         StateHasChanged();
     }
 
+    private void CreateBlog()
+    {
+        NavigationManager.NavigateTo("/add-blog");
+    }
+
     private void Login()
     {
         NavigationManager.NavigateTo("/login");
