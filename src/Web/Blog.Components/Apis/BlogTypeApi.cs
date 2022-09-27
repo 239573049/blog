@@ -11,9 +11,9 @@ public class BlogTypeApi
 {
     private readonly HttpClient http;
     private readonly IPopupService _popupService;
-    private readonly ISyncLocalStorageService localStorageService;
+    private readonly ILocalStorageService localStorageService;
     private const string Name = "/api/BlogType";
-    public BlogTypeApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ISyncLocalStorageService localStorageService)
+    public BlogTypeApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ILocalStorageService localStorageService)
     {
         http = httpClientFactory.CreateClient(string.Empty);
 
@@ -31,7 +31,7 @@ public class BlogTypeApi
     {
 
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PostAsJsonAsync(Name, input);
@@ -57,7 +57,7 @@ public class BlogTypeApi
     public async Task DeleteAsync(Guid id)
     {
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.DeleteAsync(Name + "/" + id.ToString());
@@ -84,7 +84,7 @@ public class BlogTypeApi
     {
 
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PutAsJsonAsync(Name, input);
@@ -109,7 +109,7 @@ public class BlogTypeApi
     public async Task<List<BlogTypeDto>> GetListAsync()
     {
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name + "/list");

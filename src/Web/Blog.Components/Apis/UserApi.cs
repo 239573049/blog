@@ -11,9 +11,9 @@ public class UserApi
 {
     private readonly HttpClient http;
     private readonly IPopupService _popupService;
-    private readonly ISyncLocalStorageService localStorageService;
+    private readonly ILocalStorageService localStorageService;
     private const string Name = "/api/User";
-    public UserApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ISyncLocalStorageService localStorageService)
+    public UserApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ILocalStorageService localStorageService)
     {
         http = httpClientFactory.CreateClient(string.Empty);
 
@@ -30,7 +30,7 @@ public class UserApi
     /// <returns></returns>
     public async Task CreateUserAsync(CreateUserDto input)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PostAsJsonAsync(Name, input);
@@ -51,7 +51,7 @@ public class UserApi
     public async Task<string?> LoginAsync(LoginDto input)
     {
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PostAsJsonAsync(Name + "/login", input);
@@ -64,7 +64,7 @@ public class UserApi
             return "";
         }
 
-        localStorageService.SetItemAsString("token", data.Data);
+        await localStorageService.SetItemAsStringAsync("token", data.Data);
 
         return data.Data;
     }
@@ -76,7 +76,7 @@ public class UserApi
     /// <returns></returns>
     public async Task UpdateAsync(UpdateUserDto input)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PutAsJsonAsync(Name, input);
@@ -97,7 +97,7 @@ public class UserApi
     /// <returns></returns>
     public async Task DeleteAsync(Guid id)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.DeleteAsync(Name + "/" + id);
@@ -117,7 +117,7 @@ public class UserApi
     /// <returns></returns>
     public async Task<UserDto> GetAsync()
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name);

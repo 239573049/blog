@@ -24,7 +24,7 @@ public partial class Tabs
     public IKeyLocalEventBus<BlogTypeDto> KeyLocalEventBus { get; set; }
 
     [Inject]
-    private ISyncLocalStorageService LocalStorageService { get; set; } = null!;
+    private ILocalStorageService LocalStorageService { get; set; } = null!;
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
@@ -49,7 +49,7 @@ public partial class Tabs
     {
         if(firstRender)
         {
-            var token = LocalStorageService.GetItemAsString("token");
+            var token = await LocalStorageService.GetItemAsStringAsync("token");
 
             isAuthorization = !string.IsNullOrEmpty(token);
 
@@ -65,9 +65,9 @@ public partial class Tabs
         await KeyLocalEventBus.PublishAsync(nameof(Home), blog);
     }
 
-    private void LogOut()
+    private async void LogOut()
     {
-        LocalStorageService.RemoveItem("token");
+        await LocalStorageService.RemoveItemAsync("token");
 
         isAuthorization = false;
 

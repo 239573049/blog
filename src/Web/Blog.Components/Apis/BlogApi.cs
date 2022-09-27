@@ -12,9 +12,9 @@ public class BlogApi
 {
     private readonly HttpClient http;
     private readonly IPopupService _popupService;
-    private readonly ISyncLocalStorageService localStorageService;
+    private readonly ILocalStorageService localStorageService;
     private const string Name = "/api/Blog";
-    public BlogApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ISyncLocalStorageService localStorageService)
+    public BlogApi(IHttpClientFactory httpClientFactory, IPopupService popupService, ILocalStorageService localStorageService)
     {
         http = httpClientFactory.CreateClient(string.Empty);
 
@@ -30,7 +30,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task CreateAsync(CreateBlogsDto input)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.PostAsJsonAsync(Name, input);
@@ -51,7 +51,7 @@ public class BlogApi
     public async Task AddPageViewAsync(Guid blogId)
     {
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name + "/page-view/" + blogId.ToString());
@@ -72,7 +72,7 @@ public class BlogApi
     public async Task UpdateAsync(UpdateBlogDto input)
     {
 
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var message = await http.PutAsJsonAsync(Name, input);
 
@@ -91,8 +91,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task DeleteAsync(Guid id)
     {
-
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var message = await http.DeleteAsync(Name);
 
@@ -116,7 +115,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task<BlogDto?> GetAsync(Guid id)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name + "/" + id.ToString());
@@ -144,7 +143,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task LikeAsync(Guid id)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name + "/like/" + id);
@@ -170,7 +169,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task CreateCommentAsync(CreateCommentDto input)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var message = await http.PostAsJsonAsync(Name + "/comment", input);
 
@@ -196,7 +195,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task DeleteCommentAsync(Guid id)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var message = await http.DeleteAsync(Name + "/comment/" + id);
 
@@ -220,7 +219,7 @@ public class BlogApi
     /// <returns></returns>
     public async Task<PageResponseDto<PageBlogDto>> GetListAsync(BlogInput input)
     {
-        var token = localStorageService.GetItemAsString("token");
+        var token = await localStorageService.GetItemAsStringAsync("token");
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var message = await http.GetAsync(Name + $"/list?Keyword={input.Keyword}&TypeId={input.TypeId}&Page={input.Page}&PageSize={input.PageSize}");

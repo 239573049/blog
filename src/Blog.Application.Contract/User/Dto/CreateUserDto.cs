@@ -7,13 +7,13 @@ public class CreateUserDto
     /// <summary>
     /// 用户名
     /// </summary>
-    [MinLength(6,ErrorMessage ="用户名长度不能小于六位")]
+    [MinLength(5,ErrorMessage = "用户名长度不能小于五位")]
     public string Username { get; set; } = null!;
 
     /// <summary>
     /// 密码
     /// </summary>
-    [MinLength(6, ErrorMessage = "密码长度不能小于六位")]
+    [MinLength(5, ErrorMessage = "密码长度不能小于五位")]
     public string Password { get; set; } = null!;
 
     /// <summary>

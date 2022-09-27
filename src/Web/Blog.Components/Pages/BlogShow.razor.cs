@@ -20,10 +20,8 @@ public partial class BlogShow
     public BlogApi BlogApi { get; set; } = null!;
 
     [Inject]
-    public ISyncLocalStorageService ISyncLocalStorageService { get; set; } = null!;
+    public IJSRuntime Js { get; set; } 
 
-    [Inject]
-    public IJSRuntime Js { get; set; } = null!;
 
     /// <summary>
     /// 评论内容
@@ -54,7 +52,6 @@ public partial class BlogShow
     {
         if(firstRender)
         {
-            _upload.Token = "Bearer "+ISyncLocalStorageService.GetItemAsString("token");
             await GetBlogAsync();
             await AddPageViewAsync();
             await base.OnAfterRenderAsync(firstRender);
